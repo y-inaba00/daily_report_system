@@ -12,7 +12,7 @@ public enum ForwardConst {
     ACT_EMP("Employee"),
     ACT_REP("Report"),
     ACT_AUTH("Auth"),
-    
+
     //command
     CMD("command"),
     CMD_NONE(""),
@@ -24,9 +24,9 @@ public enum ForwardConst {
     CMD_NEW("entryNew"),
     CMD_CREATE("create"),
     CMD_EDIT("edit"),
-    CMD_UPDATE("udate"),
+    CMD_UPDATE("update"),
     CMD_DESTROY("destroy"),
-    
+
     //jsp
     FW_ERR_UNKNOWN("error/unknown"),
     FW_TOP_INDEX("topPage/index"),
@@ -39,23 +39,24 @@ public enum ForwardConst {
     FW_REP_SHOW("reports/show"),
     FW_REP_NEW("reports/new"),
     FW_REP_EDIT("reports/edit");
-    
+
     /**
      * 文字列
      */
     private final String text;
-    
+
     /**
      * コンストラクタ
      */
     private ForwardConst(final String text) {
         this.text = text;
     }
-    
+
     /**
      * 値(文字列)取得
      */
     public String getValue() {
         return this.text;
     }
+
 }
