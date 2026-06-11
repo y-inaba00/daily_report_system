@@ -6,7 +6,7 @@
 <c:set var="action" value="${ForwardConst.ACT_EMP.getValue()}" />
 <c:set var="commIdx" value="${ForwardConst.CMD_INDEX.getValue()}" />
 <c:set var="commUpd" value="${ForwardConst.CMD_UPDATE.getValue()}" />
-<c:set var="commDel" value="${ForwardConst.CMD_DESTROY.getValue()}" />"
+<c:set var="commDel" value="${ForwardConst.CMD_DESTROY.getValue()}" />
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
@@ -18,7 +18,11 @@
             <c:import url="_form.jsp" />
         </form>
         
-        <p>
+        <p><form method="POST"
+            action="<c:url value='?action=${action}&command=${commDel}' />">
+            <input type="hidden" name="${AttributeConst.EMP_ID.getValue()}" value="${employee.id}" />
+            <input type="hidden" name="${AttributeConst.TOKEN.getValue()}" value="${_token}" />
+        </form>
             <a href="#" onclick="confirmDestroy();">この従業員情報を削除する</a>
         </p>
         <form method="POST"
@@ -29,7 +33,7 @@
             <script>
             function confirmDestroy() {
                 if (confirm("本当に削除してよろしいですか？")) {
-                    document.form[1].submit();
+                    document.forms[1].submit();
                     }
                 }
             </script>
