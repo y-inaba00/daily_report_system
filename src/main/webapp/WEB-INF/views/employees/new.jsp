@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="constants.ForwardConst"%>
 
@@ -11,8 +10,7 @@
     <c:param name="content">
         <h2>従業員 新規登録ページ</h2>
 
-        <form method="POST"
-            action="<c:url value='?action=${action}&aommand=${commCrt}' />">
+        <form method="POST" action="<c:url value='?action=${action}&command=${commCrt}' />">
             <c:import url="_form.jsp" />
         </form>
 
