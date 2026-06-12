@@ -9,7 +9,7 @@
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
-        <c:if test="${flush_error}">
+        <c:if test="${loginError}">
             <div id="flush_error">社員番号かパスワードが間違っています。</div>
         </c:if>
         <c:if test="${flush != null}">
