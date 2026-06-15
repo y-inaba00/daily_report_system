@@ -21,50 +21,50 @@ import services.ReportService;
 public class ReportAction extends ActionBase {
 
     private ReportService service;
-    
+
     /**
      * メソッドを実行する
      */
     @Override
     public void process() throws ServletException, IOException {
-        
+
         service = new ReportService();
-        
+
         //メソッドを実行
         invoke();
         service.close();
     }
-    
+
     /**
      * 一覧画面を表示する
      * @throws ServletException
      * @throws IOException
      */
     public void index() throws ServletException, IOException {
-        
+
         //指定されたページ数の一覧画面に表示する日報データを取得
         int page = getPage();
         List<ReportView> reports = service.getAllPerPage(page);
-        
+
         //全日報のデータの件数を取得
         long reportsCount = service.countAll();
-        
+
         putRequestScope(AttributeConst.REPORTS, reports); //取得した日報データ
         putRequestScope(AttributeConst.REP_COUNT, reportsCount); //全ての日報データの件数
         putRequestScope(AttributeConst.PAGE, page); //ページ数
         putRequestScope(AttributeConst.MAX_ROW, JpaConst.ROW_PER_PAGE); //1ページに表示するレコード数
-        
+
         //セッションにフラッシュメッセージが設定されている場合はリクエストスコープに移し替え、セッションからは削除する
         String flush = getSessionScope(AttributeConst.FLUSH);
-        if(flush != null) {
+        if (flush != null) {
             putRequestScope(AttributeConst.FLUSH, flush);
             removeSessionScope(AttributeConst.FLUSH);
         }
-        
+
         //一覧画面を表示
         forward(ForwardConst.FW_REP_INDEX);
     }
-    
+
     /**
      * 新規登録画面を表示する
      * @throws ServletException
@@ -83,14 +83,14 @@ public class ReportAction extends ActionBase {
         forward(ForwardConst.FW_REP_NEW);
 
     }
-    
+
     /**
      * 新規登録を行う
      * @throws ServletException
      * @throws IOException
      */
     public void create() throws ServletException, IOException {
-        
+
         //CSRF対策tokenのチェック
         if (checkToken()) {
 
@@ -102,8 +102,8 @@ public class ReportAction extends ActionBase {
             } else {
                 day = LocalDate.parse(getRequestParam(AttributeConst.REP_DATE));
             }
-            
-          //セッションからログイン中の従業員情報を取得
+
+            //セッションからログイン中の従業員情報を取得
             EmployeeView ev = (EmployeeView) getSessionScope(AttributeConst.LOGIN_EMP);
 
             //パラメータの値をもとに日報情報のインスタンスを作成する
@@ -115,8 +115,8 @@ public class ReportAction extends ActionBase {
                     getRequestParam(AttributeConst.REP_CONTENT),
                     null,
                     null);
-            
-          //日報情報登録
+
+            //日報情報登録
             List<String> errors = service.create(rv);
 
             if (errors.size() > 0) {
@@ -138,6 +138,30 @@ public class ReportAction extends ActionBase {
                 //一覧画面にリダイレクト
                 redirect(ForwardConst.ACT_REP, ForwardConst.CMD_INDEX);
             }
+
         }
     }
+
+    /**
+     * 詳細画面を表示する
+     * @throws ServletException
+     * @throws IOException
+     */
+    public void show() throws ServletException, IOException {
+
+        //idを条件に日報データを取得する
+        ReportView rv = service.findOne(toNumber(getRequestParam(AttributeConst.REP_ID)));
+
+        if (rv == null) {
+            //該当の日報データが存在しない場合はエラー画面を表示
+            forward(ForwardConst.FW_ERR_UNKNOWN);
+        } else {
+
+            putRequestScope(AttributeConst.REPORT, rv); //取得した日報データ
+
+            //詳細画面を表示
+            forward(ForwardConst.FW_REP_SHOW);
+        }
+    }
+
 }
